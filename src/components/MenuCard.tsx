@@ -8,9 +8,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 export function MenuCard({ item }: { item: MenuItem }) {
   const { add } = useCart();
   const [open, setOpen] = useState(false);
-  const [chips, setChips] = useState(OPTIONS.chips[0]);
-  const [sauce, setSauce] = useState(OPTIONS.sauce[0]);
-  const [fish, setFish] = useState(OPTIONS.fish[0]);
+  const [chips, setChips] = useState<string>(OPTIONS.chips[0]!);
+  const [sauce, setSauce] = useState<string>(OPTIONS.sauce[0]!);
+  const [fish, setFish] = useState<string>(OPTIONS.fish[0]!);
   const [note, setNote] = useState("");
   const isFish = item.category === "Fish" || item.id.includes("fish");
 
