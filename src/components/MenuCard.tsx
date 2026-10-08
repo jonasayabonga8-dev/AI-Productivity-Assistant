@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart";
+import { useSoldOut } from "@/lib/sold-out";
 import { OPTIONS, rand, type MenuItem } from "@/lib/menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export function MenuCard({ item }: { item: MenuItem }) {
   const { add } = useCart();
+  const soldOut = useSoldOut().has(item.id);
   const [open, setOpen] = useState(false);
   const [chips, setChips] = useState<string>(OPTIONS.chips[0]!);
   const [sauce, setSauce] = useState<string>(OPTIONS.sauce[0]!);
@@ -40,8 +42,8 @@ export function MenuCard({ item }: { item: MenuItem }) {
           </div>
           <span className="font-display text-lg font-semibold text-primary">{rand(item.price)}</span>
         </div>
-        <button onClick={quickAdd} className="mx-2 mt-3 mb-1 inline-flex w-[calc(100%-1rem)] items-center justify-center gap-2 rounded-full bg-accent py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent/90">
-          <Plus className="size-4" /> Add to order
+        <button disabled={soldOut} onClick={quickAdd} className="mx-2 mt-3 mb-1 inline-flex w-[calc(100%-1rem)] items-center justify-center gap-2 rounded-full bg-accent py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground">
+          {soldOut ? "Sold out today" : <><Plus className="size-4" /> Add to order</>}
         </button>
       </div>
 

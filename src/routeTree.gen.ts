@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedKitchenRouteImport } from './routes/_authenticated/kitchen'
 import { Route as ApiAdminAiRouteImport } from './routes/api/admin-ai'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -48,6 +49,11 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedKitchenRoute = AuthenticatedKitchenRouteImport.update({
   id: '/kitchen',
   path: '/kitchen',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/cart': typeof CartRoute
   '/menu': typeof MenuRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/cart': typeof CartRoute
   '/menu': typeof MenuRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/cart': typeof CartRoute
   '/menu': typeof MenuRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/menu'
     | '/account'
+    | '/admin'
     | '/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/menu'
     | '/account'
+    | '/admin'
     | '/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/menu'
     | '/_authenticated/account'
+    | '/_authenticated/admin'
     | '/_authenticated/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
@@ -184,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/kitchen': {
       id: '/_authenticated/kitchen'
       path: '/kitchen'
@@ -210,11 +229,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedKitchenRoute: typeof AuthenticatedKitchenRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedKitchenRoute: AuthenticatedKitchenRoute,
 }
 
