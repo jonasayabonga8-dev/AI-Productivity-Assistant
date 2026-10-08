@@ -1,5 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { placeOrder } from "@/lib/orders.functions";
 import { CheckCircle2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { BUSINESS, MENU, rand } from "@/lib/menu";
@@ -18,25 +22,53 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, setQty, subtotal, clear } = useCart();
+  const { session, ready } = useAuth();
+  const place = useServerFn(placeOrder);
   const [mode, setMode] = useState<"collection" | "delivery">("collection");
   const [pay, setPay] = useState("Cash");
   const [form, setForm] = useState({ name: "", phone: "", address: "" });
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const [placed, setPlaced] = useState<{ id: number; eta: number } | null>(null);
+
+  useEffect(() => {
+    if (!session) return;
+    supabase.from("profiles").select("full_name, phone, address").eq("id", session.user.id).maybeSingle().then(({ data }) => {
+      if (data) setForm((f) => ({ name: f.name || data.full_name || "", phone: f.phone || data.phone || "", address: f.address || data.address || "" }));
+    });
+  }, [session]);
 
   const fee = mode === "delivery" ? BUSINESS.deliveryFee : 0;
   const total = subtotal + fee;
   const eta = Math.max(10, ...lines.map((l) => MENU.find((m) => m.id === l.itemId)?.prepMinutes ?? 0)) + lines.length * 2 + (mode === "delivery" ? 20 : 0);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!lines.length) return setError("Your cart is empty.");
     if (form.name.trim().length < 2) return setError("Please enter your name.");
-    if (!/^(\+27|0)\d{9}$/.test(form.phone.replace(/\s/g, ""))) return setError("Please enter a valid South African phone number.");
+    const phone = form.phone.replace(/\s/g, "");
+    if (!/^(\+27|0)\d{9}$/.test(phone)) return setError("Please enter a valid South African phone number.");
     if (mode === "delivery" && form.address.trim().length < 5) return setError("Please enter a delivery address.");
     setError("");
-    setPlaced({ id: 1000 + Math.floor(Math.random() * 9000), eta });
-    clear();
+    setBusy(true);
+    try {
+      const row = await place({
+        data: {
+          mode,
+          payment: pay as "Cash" | "Card on collection",
+          name: form.name.trim(),
+          phone,
+          address: mode === "delivery" ? form.address.trim() : undefined,
+          lines: lines.map((l) => ({ itemId: l.itemId, qty: l.qty, options: Object.fromEntries(Object.entries(l.options).filter(([, v]) => typeof v === "string")) as Record<string, string> })),
+        },
+      });
+      setPlaced({ id: Number(row.order_number), eta: row.eta_minutes });
+      clear();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not place your order.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (placed)
@@ -44,8 +76,11 @@ function CartPage() {
       <div className="mx-auto max-w-lg px-5 py-20 text-center">
         <CheckCircle2 className="mx-auto size-14 text-primary" />
         <h1 className="mt-4 text-4xl font-semibold">Order #{placed.id} received</h1>
-        <p className="mt-3 text-muted-foreground">Estimated ready in about {placed.eta} minutes. We'll notify you when it's on its way.</p>
-        <Link to="/menu" className="mt-8 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground">Order more</Link>
+        <p className="mt-3 text-muted-foreground">Estimated ready in about {placed.eta} minutes. Follow it live on your orders page.</p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link to="/account" className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground">Track my order</Link>
+          <Link to="/menu" className="rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground">Order more</Link>
+        </div>
       </div>
     );
 
@@ -97,7 +132,11 @@ function CartPage() {
           <div className="flex justify-between pt-2 font-display text-xl font-semibold"><span>Total</span><span>{rand(total)}</span></div>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
-        <button className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90">Place order</button>
+        {ready && !session ? (
+          <Link to="/auth" search={{ next: "/cart" }} className="block w-full rounded-full bg-accent py-3 text-center font-semibold text-accent-foreground shadow-warm hover:bg-accent/90">Sign in to place order</Link>
+        ) : (
+          <button disabled={busy} className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90 disabled:opacity-60">{busy ? "Placing order…" : "Place order"}</button>
+        )}
       </form>
     </div>
   );
