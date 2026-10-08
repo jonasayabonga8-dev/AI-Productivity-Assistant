@@ -29,7 +29,7 @@ function Kitchen() {
   useEffect(() => {
     if (!isStaff) return;
     const load = async () => {
-      const { data } = await supabase.from("orders").select("*").not("status", "in", "(completed,cancelled)").order("created_at");
+      const { data } = await supabase.from("orders").select("*").not("status", "in", "(completed,cancelled)").not("payment_status", "in", "(pending,failed)").order("created_at");
       const list = data ?? [];
       if (seen.current) {
         const fresh = list.filter((o) => !seen.current!.has(o.id));
@@ -82,7 +82,7 @@ function Kitchen() {
                       <p className="font-display text-2xl font-semibold">#{o.order_number}</p>
                       <span className={`text-sm font-medium ${late ? "text-destructive" : "text-muted-foreground"}`}>{mins} min</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{o.customer_name} · {o.mode === "delivery" ? "Delivery" : "Collection"} · {o.payment}</p>
+                    <p className="text-sm text-muted-foreground">{o.customer_name} · {o.mode === "delivery" ? "Delivery" : "Collection"} · {o.payment_status === "paid" ? "PAID online" : o.payment}</p>
                     <ul className="mt-3 space-y-1">
                       {(o.items as OrderItem[]).map((i, n) => {
                         const opts = Object.values(i.options ?? {}).filter((v) => v && v !== "None" && v !== "Regular");

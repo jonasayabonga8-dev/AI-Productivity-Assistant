@@ -1,11 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { BUSINESS, MENU } from "./menu";
 
 const OrderInput = z.object({
   mode: z.enum(["collection", "delivery"]),
-  payment: z.enum(["Cash", "Card on collection"]),
+  payment: z.enum(["Cash", "Card on collection", "Card online"]),
   name: z.string().trim().min(2).max(100),
   phone: z.string().trim().regex(/^(\+27|0)\d{9}$/),
   address: z.string().trim().max(300).optional(),
@@ -58,6 +59,7 @@ export const placeOrder = createServerFn({ method: "POST" })
         delivery_fee: fee,
         total: subtotal + fee,
         eta_minutes: eta,
+        payment_status: data.payment === "Card online" ? "pending" : "pay_on_collection",
       })
       .select("id, order_number, eta_minutes")
       .single();
@@ -65,8 +67,70 @@ export const placeOrder = createServerFn({ method: "POST" })
       console.error(error);
       throw new Error("Could not place your order. Please try again.");
     }
+    let redirectUrl: string | null = null;
+    if (data.payment === "Card online") {
+      const yocoKey = process.env["YOCO_SECRET_KEY"];
+      if (!yocoKey) {
+        await supabaseAdmin.from("orders").update({ status: "cancelled", payment_status: "failed" }).eq("id", row.id);
+        throw new Error("Online card payment isn't set up yet. Please choose cash or card on collection.");
+      }
+      const origin = new URL(getRequest().url).origin;
+      const res = await fetch("https://payments.yoco.com/api/checkouts", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${yocoKey}`, "Content-Type": "application/json", "Idempotency-Key": row.id },
+        body: JSON.stringify({
+          amount: Math.round((subtotal + fee) * 100),
+          currency: "ZAR",
+          successUrl: `${origin}/account?payment=success`,
+          cancelUrl: `${origin}/cart?payment=cancelled`,
+          failureUrl: `${origin}/cart?payment=failed`,
+          metadata: { orderId: row.id, orderNumber: String(row.order_number) },
+        }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { id?: string; redirectUrl?: string };
+      if (!res.ok || !json.id || !json.redirectUrl) {
+        console.error("Yoco checkout failed", res.status, json);
+        await supabaseAdmin.from("orders").update({ status: "cancelled", payment_status: "failed" }).eq("id", row.id);
+        throw new Error("Card payment couldn't start. Please try again or pay on collection.");
+      }
+      await supabaseAdmin.from("orders").update({ yoco_checkout_id: json.id }).eq("id", row.id);
+      redirectUrl = json.redirectUrl;
+    }
     await context.supabase.from("profiles").update({ full_name: data.name, phone: data.phone, ...(data.address ? { address: data.address } : {}) }).eq("id", context.userId);
-    return row;
+    return { ...row, redirectUrl };
+  });
+
+export const connectYoco = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Only the owner can do this.");
+    const yocoKey = process.env["YOCO_SECRET_KEY"];
+    if (!yocoKey) throw new Error("Add your Yoco secret key first.");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const origin = new URL(getRequest().url).origin;
+    const res = await fetch("https://payments.yoco.com/api/webhooks", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${yocoKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ name: `kfc-${Date.now()}`, url: `${origin}/api/public/yoco-webhook` }),
+    });
+    const json = (await res.json().catch(() => ({}))) as { id?: string; secret?: string; mode?: string };
+    if (!res.ok || !json.secret) {
+      console.error("Yoco webhook register failed", res.status, json);
+      throw new Error("Yoco didn't accept the connection. Check your secret key.");
+    }
+    await supabaseAdmin.from("payment_settings").upsert({ id: 1, yoco_webhook_id: json.id ?? null, yoco_webhook_secret: json.secret, yoco_mode: json.mode ?? null, updated_at: new Date().toISOString() });
+    return { mode: json.mode ?? "unknown", url: `${origin}/api/public/yoco-webhook` };
+  });
+
+export const yocoStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Forbidden");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.from("payment_settings").select("yoco_mode, updated_at, yoco_webhook_secret").eq("id", 1).maybeSingle();
+    return { hasKey: !!process.env["YOCO_SECRET_KEY"], connected: !!data?.yoco_webhook_secret, mode: data?.yoco_mode ?? null };
   });
 
 export const rateOrder = createServerFn({ method: "POST" })
