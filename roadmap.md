@@ -7,7 +7,9 @@
 - [x] Fish & Chips AI assistant (floating chat)
 
 ## Next phases
-- [ ] Accounts & roles (customer / staff / admin), order history, favourites
-- [ ] Orders in database, order tracking, kitchen queue
-- [ ] Admin dashboard, analytics, menu/inventory/staff management
-- [ ] Admin AI Productivity Centre (planner, analyst, feedback, promos, messages, queue optimiser)
+- [x] Accounts & roles (customer / staff / admin), order history, favourites
+- [x] Orders in database, order tracking, kitchen queue
+- [x] Admin dashboard, sales overview, sold-out toggles, staff access
+- [x] Admin AI tools (planner, feedback, promos, messages)
+- [ ] Real business details from owner (address, phone, hours, prices)
+- [ ] Online card payments
