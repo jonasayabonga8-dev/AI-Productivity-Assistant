@@ -8,7 +8,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth";
 import { CATEGORIES, MENU, rand } from "@/lib/menu";
 import type { OrderItem } from "@/lib/order-status";
-import { listStaff, setUserRole } from "@/lib/orders.functions";
+import { connectYoco, listStaff, setUserRole, yocoStatus } from "@/lib/orders.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -26,7 +26,7 @@ type Order = Tables<"orders">;
 
 function Admin() {
   const { isAdmin, ready } = useAuth();
-  const [tab, setTab] = useState<"overview" | "menu" | "staff" | "ai">("overview");
+  const [tab, setTab] = useState<"overview" | "menu" | "staff" | "ai" | "payments">("overview");
   if (ready && !isAdmin)
     return <div className="mx-auto max-w-lg px-5 py-20 text-center"><h1 className="text-3xl font-semibold">Owner only</h1><Link to="/" className="mt-6 inline-block text-primary underline">Home</Link></div>;
   return (
@@ -36,7 +36,7 @@ function Admin() {
         <Link to="/kitchen" className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Open kitchen screen</Link>
       </div>
       <div className="mt-6 flex flex-wrap gap-2 rounded-full bg-muted p-1 w-fit">
-        {([["overview", "Overview"], ["menu", "Menu"], ["staff", "Staff"], ["ai", "AI tools"]] as const).map(([k, l]) => (
+        {([["overview", "Overview"], ["menu", "Menu"], ["staff", "Staff"], ["ai", "AI tools"], ["payments", "Payments"]] as const).map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)} className={`rounded-full px-4 py-2 text-sm font-medium ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{l}</button>
         ))}
       </div>
@@ -45,6 +45,7 @@ function Admin() {
         {tab === "menu" && <MenuControl />}
         {tab === "staff" && <Staff />}
         {tab === "ai" && <AiTools />}
+        {tab === "payments" && <Payments />}
       </div>
     </div>
   );
@@ -259,6 +260,47 @@ function AiTools() {
         <button disabled={busy} onClick={run} className="mt-3 rounded-full bg-accent px-5 py-2 font-semibold text-accent-foreground disabled:opacity-60">{busy ? "Thinking…" : "Generate"}</button>
         {out && <div className="prose prose-sm mt-6 max-w-none text-foreground"><ReactMarkdown>{out}</ReactMarkdown></div>}
       </div>
+    </div>
+  );
+}
+
+function Payments() {
+  const status = useServerFn(yocoStatus);
+  const connect = useServerFn(connectYoco);
+  const [st, setSt] = useState<{ hasKey: boolean; connected: boolean; mode: string | null } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const load = () => status().then(setSt).catch(() => {});
+  useEffect(() => {
+    load();
+  }, []);
+  return (
+    <div className="glass-panel max-w-xl space-y-4 rounded-2xl p-6">
+      <h2 className="text-2xl font-semibold">Online card payments (Yoco)</h2>
+      {!st ? <p className="text-sm text-muted-foreground">Checking…</p> : (
+        <ul className="space-y-1 text-sm">
+          <li>{st.hasKey ? "✅" : "⬜"} Yoco secret key saved</li>
+          <li>{st.connected ? "✅" : "⬜"} Payment confirmations connected{st.mode ? ` (${st.mode} mode)` : ""}</li>
+        </ul>
+      )}
+      <p className="text-sm text-muted-foreground">Card orders only reach the kitchen once Yoco confirms payment. Press connect after saving your key, and again after publishing your site.</p>
+      <button
+        disabled={busy || !st?.hasKey}
+        onClick={async () => {
+          setBusy(true);
+          try {
+            const r = await connect();
+            toast.success(`Connected to Yoco (${r.mode} mode)`);
+            load();
+          } catch (e) {
+            toast.error(e instanceof Error ? e.message : "Failed");
+          } finally {
+            setBusy(false);
+          }
+        }}
+        className="rounded-full bg-accent px-5 py-2 font-semibold text-accent-foreground disabled:opacity-50"
+      >
+        {busy ? "Connecting…" : st?.connected ? "Reconnect Yoco" : "Connect Yoco"}
+      </button>
     </div>
   );
 }

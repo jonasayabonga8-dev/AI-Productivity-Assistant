@@ -19,6 +19,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedKitchenRouteImport } from './routes/_authenticated/kitchen'
 import { Route as ApiAdminAiRouteImport } from './routes/api/admin-ai'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiPublicYocoWebhookRouteImport } from './routes/api/public/yoco-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -69,6 +70,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicYocoWebhookRoute = ApiPublicYocoWebhookRouteImport.update({
+  id: '/api/public/yoco-webhook',
+  path: '/api/public/yoco-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/yoco-webhook': typeof ApiPublicYocoWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/yoco-webhook': typeof ApiPublicYocoWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/_authenticated/kitchen': typeof AuthenticatedKitchenRoute
   '/api/admin-ai': typeof ApiAdminAiRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/yoco-webhook': typeof ApiPublicYocoWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
+    | '/api/public/yoco-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
+    | '/api/public/yoco-webhook'
   id:
     | '__root__'
     | '/'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_authenticated/kitchen'
     | '/api/admin-ai'
     | '/api/chat'
+    | '/api/public/yoco-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -150,6 +162,7 @@ export interface RootRouteChildren {
   MenuRoute: typeof MenuRoute
   ApiAdminAiRoute: typeof ApiAdminAiRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiPublicYocoWebhookRoute: typeof ApiPublicYocoWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/yoco-webhook': {
+      id: '/api/public/yoco-webhook'
+      path: '/api/public/yoco-webhook'
+      fullPath: '/api/public/yoco-webhook'
+      preLoaderRoute: typeof ApiPublicYocoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -250,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   MenuRoute: MenuRoute,
   ApiAdminAiRoute: ApiAdminAiRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiPublicYocoWebhookRoute: ApiPublicYocoWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

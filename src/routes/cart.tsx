@@ -32,6 +32,11 @@ function CartPage() {
   const [placed, setPlaced] = useState<{ id: number; eta: number } | null>(null);
 
   useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get("payment");
+    if (p === "cancelled" || p === "failed") setError(p === "failed" ? "Your card payment didn't go through. Please try again or pay on collection." : "Card payment cancelled. Your order wasn't sent to the kitchen.");
+  }, []);
+
+  useEffect(() => {
     if (!session) return;
     supabase.from("profiles").select("full_name, phone, address").eq("id", session.user.id).maybeSingle().then(({ data }) => {
       if (data) setForm((f) => ({ name: f.name || data.full_name || "", phone: f.phone || data.phone || "", address: f.address || data.address || "" }));
@@ -55,15 +60,19 @@ function CartPage() {
       const row = await place({
         data: {
           mode,
-          payment: pay as "Cash" | "Card on collection",
+          payment: pay as "Cash" | "Card on collection" | "Card online",
           name: form.name.trim(),
           phone,
           address: mode === "delivery" ? form.address.trim() : undefined,
           lines: lines.map((l) => ({ itemId: l.itemId, qty: l.qty, options: Object.fromEntries(Object.entries(l.options).filter(([, v]) => typeof v === "string")) as Record<string, string> })),
         },
       });
-      setPlaced({ id: Number(row.order_number), eta: row.eta_minutes });
       clear();
+      if (row.redirectUrl) {
+        window.location.href = row.redirectUrl;
+        return;
+      }
+      setPlaced({ id: Number(row.order_number), eta: row.eta_minutes });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not place your order.");
     } finally {
@@ -122,8 +131,8 @@ function CartPage() {
         {mode === "delivery" && <Field label="Delivery address" value={form.address} onChange={(v) => setForm({ ...form, address: v })} />}
         <div>
           <p className="mb-2 text-sm font-medium">Payment</p>
-          <Toggle options={["Cash", "Card on collection"]} value={pay} onChange={setPay} />
-          <p className="mt-2 text-xs text-muted-foreground">Online card payment coming soon. We never ask for card details in chat.</p>
+          <Toggle options={["Cash", "Card on collection", "Card online"]} value={pay} onChange={setPay} />
+          <p className="mt-2 text-xs text-muted-foreground">{pay === "Card online" ? "You'll pay securely with Yoco (card, Apple Pay or Google Pay). We never see your card details." : "Pay when you collect or when your food arrives."}</p>
         </div>
         <div className="space-y-1 border-t pt-4 text-sm">
           <Row k="Subtotal" v={rand(subtotal)} />
@@ -135,7 +144,7 @@ function CartPage() {
         {ready && !session ? (
           <Link to="/auth" search={{ next: "/cart" }} className="block w-full rounded-full bg-accent py-3 text-center font-semibold text-accent-foreground shadow-warm hover:bg-accent/90">Sign in to place order</Link>
         ) : (
-          <button disabled={busy} className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90 disabled:opacity-60">{busy ? "Placing order…" : "Place order"}</button>
+          <button disabled={busy} className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90 disabled:opacity-60">{busy ? "Placing order…" : pay === "Card online" ? `Pay ${rand(total)} with card` : "Place order"}</button>
         )}
       </form>
     </div>

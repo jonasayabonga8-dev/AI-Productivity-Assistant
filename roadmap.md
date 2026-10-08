@@ -11,5 +11,5 @@
 - [x] Orders in database, order tracking, kitchen queue
 - [x] Admin dashboard, sales overview, sold-out toggles, staff access
 - [x] Admin AI tools (planner, feedback, promos, messages)
-- [ ] Real business details from owner (address, phone, hours, prices)
-- [ ] Online card payments
+- [x] Real address & phone (prices are draft, hours unconfirmed)
+- [ ] Online card payments (Yoco) - built; waiting on Yoco secret key

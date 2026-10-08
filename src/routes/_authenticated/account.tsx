@@ -94,7 +94,7 @@ function LiveOrder({ o }: { o: Order }) {
     <div className="mt-8 rounded-3xl bg-primary p-6 text-primary-foreground shadow-warm">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="font-display text-2xl font-semibold">Order #{o.order_number}</p>
-        <p className="text-sm opacity-90">About {o.eta_minutes} min · {o.mode}</p>
+        <p className="text-sm opacity-90">{o.payment_status === "pending" ? "Waiting for card payment…" : `About ${o.eta_minutes} min · ${o.mode}`}{o.payment_status === "paid" ? " · Paid" : ""}</p>
       </div>
       <ol className="mt-6 grid gap-2" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0,1fr))` }}>
         {steps.map((s, i) => (

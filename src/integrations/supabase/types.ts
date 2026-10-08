@@ -45,6 +45,7 @@ export type Database = {
           mode: string
           order_number: number
           payment: string
+          payment_status: string
           phone: string
           rating: number | null
           status: Database["public"]["Enums"]["order_status"]
@@ -52,6 +53,7 @@ export type Database = {
           total: number
           updated_at: string
           user_id: string
+          yoco_checkout_id: string | null
         }
         Insert: {
           address?: string | null
@@ -65,6 +67,7 @@ export type Database = {
           mode?: string
           order_number?: never
           payment?: string
+          payment_status?: string
           phone: string
           rating?: number | null
           status?: Database["public"]["Enums"]["order_status"]
@@ -72,6 +75,7 @@ export type Database = {
           total?: number
           updated_at?: string
           user_id: string
+          yoco_checkout_id?: string | null
         }
         Update: {
           address?: string | null
@@ -85,6 +89,7 @@ export type Database = {
           mode?: string
           order_number?: never
           payment?: string
+          payment_status?: string
           phone?: string
           rating?: number | null
           status?: Database["public"]["Enums"]["order_status"]
@@ -92,6 +97,31 @@ export type Database = {
           total?: number
           updated_at?: string
           user_id?: string
+          yoco_checkout_id?: string | null
+        }
+        Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          id: number
+          updated_at: string
+          yoco_mode: string | null
+          yoco_webhook_id: string | null
+          yoco_webhook_secret: string | null
+        }
+        Insert: {
+          id?: number
+          updated_at?: string
+          yoco_mode?: string | null
+          yoco_webhook_id?: string | null
+          yoco_webhook_secret?: string | null
+        }
+        Update: {
+          id?: number
+          updated_at?: string
+          yoco_mode?: string | null
+          yoco_webhook_id?: string | null
+          yoco_webhook_secret?: string | null
         }
         Relationships: []
       }
