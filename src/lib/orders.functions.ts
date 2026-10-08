@@ -51,7 +51,7 @@ export const placeOrder = createServerFn({ method: "POST" })
         customer_name: data.name,
         phone: data.phone,
         mode: data.mode,
-        address: data.mode === "delivery" ? data.address : null,
+        address: data.mode === "delivery" ? (data.address ?? null) : null,
         payment: data.payment,
         items,
         subtotal,

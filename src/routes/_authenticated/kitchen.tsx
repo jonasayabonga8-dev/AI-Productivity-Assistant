@@ -91,7 +91,7 @@ function Kitchen() {
                     </ul>
                     {o.address && <p className="mt-2 text-xs text-muted-foreground">📍 {o.address}</p>}
                     <div className="mt-4 flex gap-2">
-                      {nxt && <button onClick={() => update(o, nxt)} className="flex-1 rounded-full bg-primary py-2 text-sm font-semibold text-primary-foreground">Mark {STATUS_LABEL[nxt].toLowerCase()}</button>}
+                      {nxt && <button onClick={() => update(o, nxt)} className="flex-1 rounded-full bg-primary py-2 text-sm font-semibold text-primary-foreground">Mark {(STATUS_LABEL[nxt] ?? nxt).toLowerCase()}</button>}
                       <button onClick={() => update(o, "cancelled")} className="rounded-full border px-3 py-2 text-xs text-muted-foreground">Cancel</button>
                     </div>
                   </article>

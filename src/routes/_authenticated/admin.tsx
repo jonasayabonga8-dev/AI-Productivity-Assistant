@@ -125,9 +125,13 @@ function MenuControl() {
   const toggle = async (id: string) => {
     const next = !sold.has(id);
     const { error } = await supabase.from("menu_availability").upsert({ item_id: id, sold_out: next, updated_at: new Date().toISOString() });
-    if (error) return toast.error("Could not update");
+    if (error) {
+      toast.error("Could not update");
+      return;
+    }
     const s = new Set(sold);
-    next ? s.add(id) : s.delete(id);
+    if (next) s.add(id);
+    else s.delete(id);
     setSold(s);
   };
   return (
