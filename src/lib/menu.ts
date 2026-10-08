@@ -9,9 +9,9 @@ import extras from "@/assets/extras.jpg";
 export const BUSINESS = {
   name: "Khayelitsha Fish & Chips",
   tagline: "Fresh. Crispy. Local.",
-  address: "Main Road, Khayelitsha, Cape Town 7784",
-  phone: "+27 21 000 0000",
-  whatsapp: "27210000000",
+  address: "Cape Town CBD, Cape Town",
+  phone: "073 522 7408",
+  whatsapp: "27735227408",
   hours: [
     { day: "Monday – Friday", time: "09:00 – 21:00" },
     { day: "Saturday", time: "09:00 – 22:00" },
