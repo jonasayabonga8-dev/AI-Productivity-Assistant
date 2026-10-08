@@ -76,8 +76,11 @@ function CartPage() {
       <div className="mx-auto max-w-lg px-5 py-20 text-center">
         <CheckCircle2 className="mx-auto size-14 text-primary" />
         <h1 className="mt-4 text-4xl font-semibold">Order #{placed.id} received</h1>
-        <p className="mt-3 text-muted-foreground">Estimated ready in about {placed.eta} minutes. We'll notify you when it's on its way.</p>
-        <Link to="/menu" className="mt-8 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground">Order more</Link>
+        <p className="mt-3 text-muted-foreground">Estimated ready in about {placed.eta} minutes. Follow it live on your orders page.</p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link to="/account" className="rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground">Track my order</Link>
+          <Link to="/menu" className="rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground">Order more</Link>
+        </div>
       </div>
     );
 
@@ -129,7 +132,11 @@ function CartPage() {
           <div className="flex justify-between pt-2 font-display text-xl font-semibold"><span>Total</span><span>{rand(total)}</span></div>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
-        <button className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90">Place order</button>
+        {ready && !session ? (
+          <Link to="/auth" search={{ next: "/cart" }} className="block w-full rounded-full bg-accent py-3 text-center font-semibold text-accent-foreground shadow-warm hover:bg-accent/90">Sign in to place order</Link>
+        ) : (
+          <button disabled={busy} className="w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground shadow-warm hover:bg-accent/90 disabled:opacity-60">{busy ? "Placing order…" : "Place order"}</button>
+        )}
       </form>
     </div>
   );
