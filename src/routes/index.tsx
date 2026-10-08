@@ -97,7 +97,7 @@ function Home() {
             <p className="mt-5 inline-flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="size-4" /> {BUSINESS.address}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <a href={`https://wa.me/${BUSINESS.whatsapp}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-medium text-whatsapp-foreground hover:opacity-90"><MessageCircle className="size-4" /> Chat on WhatsApp</a>
-              <a href="https://maps.google.com/?q=Khayelitsha+Cape+Town" target="_blank" rel="noreferrer" className="glass-panel rounded-full px-5 py-2.5 text-sm font-medium hover:bg-card">Get directions</a>
+              <a href="https://maps.google.com/?q=Cape+Town+CBD" target="_blank" rel="noreferrer" className="glass-panel rounded-full px-5 py-2.5 text-sm font-medium hover:bg-card">Get directions</a>
             </div>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
