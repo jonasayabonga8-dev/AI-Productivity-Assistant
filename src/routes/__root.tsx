@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
+import { AuthProvider } from "@/lib/auth";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { AiChat } from "@/components/AiChat";
 import { Toaster } from "@/components/ui/sonner";
@@ -123,6 +124,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <CartProvider>
         <SiteHeader />
         <main className="min-h-[70vh]">
@@ -132,6 +134,7 @@ function RootComponent() {
         <AiChat />
         <Toaster position="top-center" />
       </CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -18,25 +18,53 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, setQty, subtotal, clear } = useCart();
+  const { session, ready } = useAuth();
+  const place = useServerFn(placeOrder);
   const [mode, setMode] = useState<"collection" | "delivery">("collection");
   const [pay, setPay] = useState("Cash");
   const [form, setForm] = useState({ name: "", phone: "", address: "" });
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const [placed, setPlaced] = useState<{ id: number; eta: number } | null>(null);
+
+  useEffect(() => {
+    if (!session) return;
+    supabase.from("profiles").select("full_name, phone, address").eq("id", session.user.id).maybeSingle().then(({ data }) => {
+      if (data) setForm((f) => ({ name: f.name || data.full_name || "", phone: f.phone || data.phone || "", address: f.address || data.address || "" }));
+    });
+  }, [session]);
 
   const fee = mode === "delivery" ? BUSINESS.deliveryFee : 0;
   const total = subtotal + fee;
   const eta = Math.max(10, ...lines.map((l) => MENU.find((m) => m.id === l.itemId)?.prepMinutes ?? 0)) + lines.length * 2 + (mode === "delivery" ? 20 : 0);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!lines.length) return setError("Your cart is empty.");
     if (form.name.trim().length < 2) return setError("Please enter your name.");
-    if (!/^(\+27|0)\d{9}$/.test(form.phone.replace(/\s/g, ""))) return setError("Please enter a valid South African phone number.");
+    const phone = form.phone.replace(/\s/g, "");
+    if (!/^(\+27|0)\d{9}$/.test(phone)) return setError("Please enter a valid South African phone number.");
     if (mode === "delivery" && form.address.trim().length < 5) return setError("Please enter a delivery address.");
     setError("");
-    setPlaced({ id: 1000 + Math.floor(Math.random() * 9000), eta });
-    clear();
+    setBusy(true);
+    try {
+      const row = await place({
+        data: {
+          mode,
+          payment: pay as "Cash" | "Card on collection",
+          name: form.name.trim(),
+          phone,
+          address: mode === "delivery" ? form.address.trim() : undefined,
+          lines: lines.map((l) => ({ itemId: l.itemId, qty: l.qty, options: Object.fromEntries(Object.entries(l.options).filter(([, v]) => typeof v === "string")) as Record<string, string> })),
+        },
+      });
+      setPlaced({ id: Number(row.order_number), eta: row.eta_minutes });
+      clear();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not place your order.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (placed)
