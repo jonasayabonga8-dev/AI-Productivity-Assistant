@@ -4,7 +4,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { BUSINESS, MENU, PROMOS } from "@/lib/menu";
 
 const TOOLS: Record<string, string> = {
-  planner: "TASK: Write today's prep plan: estimated hake portions, potato/chips quantity, chicken pieces, staffing for lunch and evening rush, and 3 practical tips. Base it on the recent order data. Be specific with numbers and state assumptions.",
+  planner: "TASK: Write today's prep plan: estimated tortillas, beef and chicken portions, vegetable fillings, salsa and guacamole quantities, staffing for lunch and evening rush, and 3 practical tips. Base it on the recent order data. Be specific with numbers and state assumptions.",
   feedback: "TASK: Analyse the customer ratings and feedback. Give: overall sentiment, top 3 things customers love, top 3 complaints, and 3 concrete fixes. If there is little feedback, say so.",
   promo: "TASK: Suggest 3 promotions for this week that would lift sales, based on best/worst sellers and quiet times. For each: name, offer, price in ZAR, best day/time, and why.",
   message: "TASK: Write ready-to-send WhatsApp/SMS messages for customers (under 300 characters each, warm local tone, a little isiXhosa is fine). Write 3 variations based on the owner's request.",
@@ -62,7 +62,7 @@ export const Route = createFileRoute("/api/admin-ai")({
         const feedback = (orders ?? []).filter((o) => o.rating).map((o) => `${o.rating}★ ${o.feedback ?? ""}`).slice(0, 80);
         const today = new Date().toLocaleDateString("en-ZA", { weekday: "long", day: "numeric", month: "long", timeZone: "Africa/Johannesburg" });
 
-        const instructions = `ROLE: You are the business assistant for the owner of ${BUSINESS.name}, Khayelitsha, Cape Town.
+        const instructions = `ROLE: You are the business assistant for the owner of ${BUSINESS.name}, Cape Town CBD, Cape Town.
 CONTEXT: Today is ${today}. Hours: ${BUSINESS.hours.map((h) => `${h.day} ${h.time}`).join("; ")}.
 Menu: ${MENU.map((m) => `${m.name} R${m.price}`).join("; ")}. Current promos: ${PROMOS.map((p) => `${p.title} ${p.price}`).join("; ")}.
 Last 14 days: ${orders?.length ?? 0} orders, revenue R${revenue.toFixed(0)}. Items sold: ${JSON.stringify(counts)}. Orders by hour (SAST): ${JSON.stringify(byHour)}. Orders by weekday: ${JSON.stringify(byDay)}.

@@ -1,10 +1,14 @@
-# Roadmap — Khayelitsha Fish & Chips
+# Roadmap — Ayas Delicious Tacos
+
+## Taco conversion
+- [x] Taco branding, menu, photos, customisation and AI copy; retain ordering and contact details
+- [x] Verify home, menu and adding a customised taco to the cart
 
 ## Phase 1 (now)
 - [x] Warm design system + appealing food photography and colours
 - [x] Landing page (hero, popular meals, categories, promos, hours, location, reviews, FAQ, WhatsApp)
 - [x] Menu with search, filter, customisation; cart; checkout
-- [x] Fish & Chips AI assistant (floating chat)
+- [x] Taco AI assistant (floating chat)
 
 ## Next phases
 - [x] Accounts & roles (customer / staff / admin), order history, favourites

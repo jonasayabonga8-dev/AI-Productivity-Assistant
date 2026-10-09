@@ -9,9 +9,11 @@ import { STATUS_LABEL, nextStatus, type OrderItem } from "@/lib/order-status";
 export const Route = createFileRoute("/_authenticated/kitchen")({
   head: () => ({
     meta: [
-      { title: "Kitchen screen — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Kitchen screen — Ayas Delicious Tacos" },
       { name: "description", content: "Live order queue for kitchen staff." },
-      { property: "og:title", content: "Kitchen screen — Aya's Delicious Fish & Chips" },
+      { property: "og:title", content: "Kitchen screen — Ayas Delicious Tacos" },
       { property: "og:description", content: "Live order queue for kitchen staff." },
     ],
   }),
@@ -57,7 +59,7 @@ function Kitchen() {
 
   const cols: { key: Order["status"][]; title: string }[] = [
     { key: ["received"], title: "New" },
-    { key: ["preparing"], title: "Frying" },
+    { key: ["preparing"], title: "Preparing" },
     { key: ["ready", "out_for_delivery"], title: "Ready / on the way" },
   ];
 

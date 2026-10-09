@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
-import hero from "@/assets/hero.jpg";
+import hero from "@/assets/tacos-hero.jpg";
 
 const safeNext = (n?: string) => (n && n.startsWith("/") && !n.startsWith("//") ? n : "/account");
 
@@ -13,10 +13,12 @@ export const Route = createFileRoute("/auth")({
   validateSearch: z.object({ next: z.string().optional() }),
   head: () => ({
     meta: [
-      { title: "Sign in — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Sign in — Ayas Delicious Tacos" },
       { name: "description", content: "Sign in to order, track your food and see your order history." },
-      { property: "og:title", content: "Sign in — Aya's Delicious Fish & Chips" },
-      { property: "og:description", content: "Sign in to order and track your fish & chips." },
+      { property: "og:title", content: "Sign in — Ayas Delicious Tacos" },
+      { property: "og:description", content: "Sign in to order and track your tacos." },
     ],
   }),
   component: AuthPage,
@@ -75,7 +77,7 @@ function AuthPage() {
 
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-5 py-12 md:grid-cols-2">
-      <img src={hero} alt="Golden fish and chips" className="hidden h-full max-h-[520px] w-full rounded-3xl object-cover shadow-warm md:block" />
+      <img src={hero} alt="Fresh tacos with salsa and guacamole" className="hidden h-full max-h-[520px] w-full rounded-3xl object-cover shadow-warm md:block" />
       <div className="glass-panel rounded-3xl p-8">
         <h1 className="text-3xl font-semibold">{mode === "in" ? "Welcome back" : "Create your account"}</h1>
         <p className="mt-2 text-sm text-muted-foreground">Order faster, track your food live and see past orders.</p>

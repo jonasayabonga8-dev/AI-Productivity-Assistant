@@ -15,3 +15,5 @@
 - Roles live in user_roles (admin/staff/customer); the first account to sign up becomes admin via the signup trigger — gives the owner access without manual setup.
 - Owner AI tools stream via src/routes/api/admin-ai.ts and verify the caller is admin from their bearer token.
 - Card payments use Yoco Checkout; orders stay payment_status 'pending' (hidden from kitchen) until the signed webhook at /api/public/yoco-webhook marks them paid. The webhook signing secret is stored in the service-role-only payment_settings table because Yoco returns it once at registration.
+
+- Cart restoration filters out item IDs no longer in the current menu; historical orders keep their stored item names and prices — menu changes cannot reinterpret past purchases.

@@ -53,20 +53,20 @@
 
 :root {
   --radius: 1rem;
-  /* paper #f7f5ef, ink #23211d, brand green #1a7a4a, accent orange #f08c2e */
-  --background: oklch(0.97 0.008 95);
+  /* Bright stone, salsa red, fresh green and warm tortilla gold. */
+  --background: oklch(0.985 0.002 95);
   --foreground: oklch(0.24 0.008 80);
   --card: oklch(0.995 0.004 95);
   --card-foreground: oklch(0.24 0.008 80);
   --popover: oklch(0.995 0.004 95);
   --popover-foreground: oklch(0.24 0.008 80);
-  --primary: oklch(0.5 0.12 155);
+  --primary: oklch(0.52 0.19 27);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.93 0.03 150);
   --secondary-foreground: oklch(0.32 0.09 155);
   --muted: oklch(0.94 0.01 90);
   --muted-foreground: oklch(0.47 0.01 80);
-  --accent: oklch(0.72 0.16 58);
+  --accent: oklch(0.48 0.12 155);
   --accent-foreground: oklch(0.99 0 0);
   --sun: oklch(0.93 0.07 85);
   --glass: oklch(1 0 0 / 0.65);
@@ -76,7 +76,7 @@
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.24 0.008 80 / 0.08);
   --input: oklch(0.24 0.008 80 / 0.14);
-  --ring: oklch(0.5 0.12 155);
+  --ring: oklch(0.52 0.19 27);
   --chart-1: oklch(0.5 0.12 155);
   --chart-2: oklch(0.72 0.16 58);
   --chart-3: oklch(0.6 0.1 220);
@@ -123,4 +123,15 @@
 }
 @utility animate-rise {
   animation: rise 0.7s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.taco-hero-shade {
+  background: linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 94%, transparent) 28%, color-mix(in oklch, var(--background) 45%, transparent) 47%, transparent 68%);
+}
+@media (max-width: 639px) {
+  .taco-hero > img { object-position: 65% center; }
+  .taco-hero-shade { background: color-mix(in oklch, var(--background) 82%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise { animation: none; }
 }

@@ -5,7 +5,7 @@ export type CartLine = {
   key: string;
   itemId: string;
   qty: number;
-  options: { chips?: string; sauce?: string; fish?: string; note?: string };
+  options: { tortilla?: string; heat?: string; sauce?: string; note?: string };
 };
 
 type CartCtx = {
@@ -26,7 +26,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setLines(JSON.parse(raw));
+      if (raw) {
+        const saved: CartLine[] = JSON.parse(raw);
+        if (Array.isArray(saved)) setLines(saved.filter((line) => MENU.some((item) => item.id === line.itemId)));
+      }
     } catch {}
   }, []);
 

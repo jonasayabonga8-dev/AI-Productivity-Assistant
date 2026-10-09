@@ -83,8 +83,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aya's Delicious Fish & Chips — Fresh. Crispy. Local." },
-      { name: "description", content: "Order fresh fish & chips in Khayelitsha for collection or delivery." },
+      { title: "Ayas Delicious Tacos — Fresh. Crispy. Local." },
+      { name: "description", content: "Order fresh tacos in Cape Town CBD for collection or delivery." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

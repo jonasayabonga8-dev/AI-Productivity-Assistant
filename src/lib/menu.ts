@@ -1,13 +1,11 @@
-import hero from "@/assets/hero.jpg";
-import chicken from "@/assets/chicken.jpg";
-import burger from "@/assets/burger.jpg";
-import combo from "@/assets/combo.jpg";
-import chips from "@/assets/chips.jpg";
+import hero from "@/assets/tacos-hero.jpg";
+import chicken from "@/assets/tacos-chicken.jpg";
+import veggie from "@/assets/tacos-veggie.jpg";
+import nachos from "@/assets/tacos-nachos.jpg";
 import drinks from "@/assets/drinks.jpg";
-import extras from "@/assets/extras.jpg";
 
 export const BUSINESS = {
-  name: "Aya's Delicious Fish & Chips",
+  name: "Ayas Delicious Tacos",
   founder: "Ayabonga Jonas",
   tagline: "Fresh. Crispy. Local.",
   address: "Cape Town CBD, Cape Town",
@@ -21,81 +19,49 @@ export const BUSINESS = {
   deliveryFee: 25,
 };
 
-export const CATEGORIES = ["Fish", "Chips", "Chicken", "Burgers", "Combos", "Extras", "Drinks"] as const;
+export const CATEGORIES = ["Tacos", "Chicken", "Vegetarian", "Nachos", "Combos", "Extras", "Drinks"] as const;
 export type Category = (typeof CATEGORIES)[number];
-
 export const CATEGORY_IMAGES: Record<Category, string> = {
-  Fish: hero,
-  Chips: chips,
-  Chicken: chicken,
-  Burgers: burger,
-  Combos: combo,
-  Extras: extras,
-  Drinks: drinks,
+  Tacos: hero, Chicken: chicken, Vegetarian: veggie, Nachos: nachos, Combos: hero, Extras: nachos, Drinks: drinks,
 };
-
 export type MenuItem = {
-  id: string;
-  name: string;
-  category: Category;
-  price: number;
-  description: string;
-  image: string;
-  popular?: boolean;
-  prepMinutes: number;
-  customisable?: boolean;
+  id: string; name: string; category: Category; price: number; description: string;
+  image: string; popular?: boolean; prepMinutes: number; customisable?: boolean;
 };
-
 export const MENU: MenuItem[] = [
-  { id: "hake-chips", name: "Hake & Chips", category: "Fish", price: 65, description: "Flaky battered hake, golden chips, lemon.", image: hero, popular: true, prepMinutes: 12, customisable: true },
-  { id: "large-hake", name: "Large Hake & Chips", category: "Fish", price: 85, description: "Double portion of hake with large chips.", image: hero, prepMinutes: 14, customisable: true },
-  { id: "fish-only", name: "Fish Only", category: "Fish", price: 45, description: "One crispy hake fillet.", image: hero, prepMinutes: 10, customisable: true },
-  { id: "small-chips", name: "Small Chips", category: "Chips", price: 20, description: "Hand-cut, salted.", image: chips, prepMinutes: 6, customisable: true },
-  { id: "medium-chips", name: "Medium Chips", category: "Chips", price: 30, description: "Hand-cut, salted.", image: chips, prepMinutes: 7, customisable: true },
-  { id: "large-chips", name: "Large Chips", category: "Chips", price: 40, description: "Share-size hand-cut chips.", image: chips, popular: true, prepMinutes: 8, customisable: true },
-  { id: "chicken-chips", name: "Chicken & Chips", category: "Chicken", price: 55, description: "Buttermilk fried chicken with chips.", image: chicken, popular: true, prepMinutes: 14, customisable: true },
-  { id: "wings", name: "Chicken Wings (6)", category: "Chicken", price: 60, description: "Crispy wings, choice of sauce.", image: chicken, prepMinutes: 15, customisable: true },
-  { id: "strips", name: "Chicken Strips", category: "Chicken", price: 50, description: "Tender strips with dip.", image: chicken, prepMinutes: 12, customisable: true },
-  { id: "fish-burger", name: "Fish Burger", category: "Burgers", price: 55, description: "Battered hake, slaw, tartare.", image: burger, prepMinutes: 12, customisable: true },
-  { id: "chicken-burger", name: "Chicken Burger", category: "Burgers", price: 55, description: "Crispy chicken fillet, lettuce, mayo.", image: burger, prepMinutes: 12, customisable: true },
-  { id: "beef-burger", name: "Beef Burger", category: "Burgers", price: 60, description: "Beef patty, cheese, onion, tomato.", image: burger, popular: true, prepMinutes: 13, customisable: true },
-  { id: "fish-combo", name: "Fish Combo", category: "Combos", price: 80, description: "Hake, chips and a cold drink.", image: combo, prepMinutes: 13, customisable: true },
-  { id: "chicken-combo", name: "Chicken Combo", category: "Combos", price: 75, description: "Chicken, chips and a cold drink.", image: combo, prepMinutes: 14, customisable: true },
-  { id: "family-combo", name: "Family Combo", category: "Combos", price: 230, description: "2 fish, 2 chicken, 2 large chips, coleslaw, 2L drink.", image: combo, popular: true, prepMinutes: 20, customisable: true },
-  { id: "russian", name: "Russian", category: "Extras", price: 18, description: "Grilled russian sausage.", image: extras, prepMinutes: 5 },
-  { id: "cheese", name: "Cheese", category: "Extras", price: 8, description: "Melted cheese topping.", image: extras, prepMinutes: 1 },
-  { id: "egg", name: "Egg", category: "Extras", price: 7, description: "Fried egg.", image: extras, prepMinutes: 3 },
-  { id: "coleslaw", name: "Coleslaw", category: "Extras", price: 15, description: "Creamy house slaw.", image: extras, prepMinutes: 1 },
+  { id: "beef-tacos", name: "Beef Tacos", category: "Tacos", price: 65, description: "Two grilled beef tacos with onion, coriander and salsa.", image: hero, popular: true, prepMinutes: 12, customisable: true },
+  { id: "taco-trio", name: "Taco Trio", category: "Tacos", price: 85, description: "Beef, chicken and veggie. Three tacos, all the flavour.", image: hero, prepMinutes: 14, customisable: true },
+  { id: "chicken-tacos", name: "Chicken Tacos", category: "Chicken", price: 55, description: "Two grilled chicken tacos with pico de gallo and avocado.", image: chicken, popular: true, prepMinutes: 12, customisable: true },
+  { id: "spicy-chicken-tacos", name: "Spicy Chicken Tacos", category: "Chicken", price: 60, description: "Two chicken tacos with chilli salsa, lime and coriander.", image: chicken, prepMinutes: 12, customisable: true },
+  { id: "veggie-tacos", name: "Veggie Tacos", category: "Vegetarian", price: 50, description: "Two tacos with roasted peppers, beans, corn and avocado.", image: veggie, popular: true, prepMinutes: 10, customisable: true },
+  { id: "loaded-nachos", name: "Loaded Nachos", category: "Nachos", price: 60, description: "Golden tortilla chips, cheese, beans, salsa and jalapeños.", image: nachos, prepMinutes: 10, customisable: true },
+  { id: "sharing-nachos", name: "Sharing Nachos", category: "Nachos", price: 85, description: "A generous loaded nacho platter for the table.", image: nachos, prepMinutes: 12, customisable: true },
+  { id: "beef-taco-combo", name: "Beef Taco Combo", category: "Combos", price: 80, description: "Two beef tacos and a cold drink.", image: hero, prepMinutes: 13, customisable: true },
+  { id: "chicken-taco-combo", name: "Chicken Taco Combo", category: "Combos", price: 75, description: "Two chicken tacos and a cold drink.", image: chicken, prepMinutes: 13, customisable: true },
+  { id: "taco-family-combo", name: "Family Taco Feast", category: "Combos", price: 230, description: "Eight mixed tacos, sharing nachos and a 2L drink.", image: hero, popular: true, prepMinutes: 20, customisable: true },
+  { id: "guacamole", name: "Guacamole", category: "Extras", price: 15, description: "A side of creamy avocado guacamole.", image: hero, prepMinutes: 1 },
+  { id: "taco-cheese", name: "Extra Cheese", category: "Extras", price: 8, description: "An extra helping of cheese for your tacos.", image: nachos, prepMinutes: 1 },
+  { id: "salsa", name: "Fresh Salsa", category: "Extras", price: 7, description: "Tomato, onion, coriander and a little kick.", image: hero, prepMinutes: 1 },
   { id: "coke", name: "Coca-Cola 330ml", category: "Drinks", price: 15, description: "Ice cold.", image: drinks, prepMinutes: 0 },
   { id: "fanta", name: "Fanta 330ml", category: "Drinks", price: 15, description: "Ice cold.", image: drinks, prepMinutes: 0 },
   { id: "sprite", name: "Sprite 330ml", category: "Drinks", price: 15, description: "Ice cold.", image: drinks, prepMinutes: 0 },
   { id: "water", name: "Still Water 500ml", category: "Drinks", price: 12, description: "Chilled.", image: drinks, prepMinutes: 0 },
   { id: "juice", name: "Orange Juice", category: "Drinks", price: 18, description: "Fresh and fruity.", image: drinks, prepMinutes: 0 },
 ];
-
 export const OPTIONS = {
-  chips: ["Regular", "Extra salt", "No salt", "Vinegar"],
-  sauce: ["None", "Tomato", "Chilli", "Mayo", "Tartare"],
-  fish: ["Battered", "Grilled"],
+  tortilla: ["Soft corn", "Soft flour"],
+  sauce: ["Tomato salsa", "Chilli salsa", "None"],
+  heat: ["Mild", "Medium", "Hot"],
 };
-
 export const PROMOS = [
-  { title: "Lunch Special", headline: "Fish & chips + drink", body: "Weekdays 11:00–14:30. Hake or chicken.", price: "R80", tone: "primary" as const },
-  { title: "Family Combo", headline: "Feeds four hungry people", body: "Two fish, two chicken, chips, slaw, 2L drink.", price: "R230", tone: "accent" as const },
+  { title: "Lunch Special", headline: "Two tacos + a drink", body: "Weekdays 11:00–14:30. Choose beef or chicken.", price: "R80", tone: "primary" as const },
+  { title: "Family Taco Feast", headline: "Bring the whole crew", body: "Eight mixed tacos, sharing nachos and a 2L drink.", price: "R230", tone: "accent" as const },
   { title: "Student Special", headline: "Show your card, save 15%", body: "Any main, any day with valid student ID.", price: "-15%", tone: "glass" as const },
 ];
-
-export const REVIEWS = [
-  { name: "Thabo M.", text: "Best chips in the area, hands down. The batter is light and the fish is always fresh." },
-  { name: "Nomvula K.", text: "Family combo feeds everyone and never disappoints. We come every Sunday." },
-  { name: "Lerato D.", text: "Ordered on WhatsApp, ready in 12 minutes. Friendly staff and hot food." },
-];
-
 export const FAQ = [
-  { q: "Do you deliver?", a: "Yes, we deliver around Khayelitsha for a R25 fee. Collection is free." },
+  { q: "Do you deliver?", a: "Delivery costs R25. Contact us to confirm your address is in our delivery area. Collection from Cape Town CBD is free." },
   { q: "How long does an order take?", a: "Most orders are ready in 10–20 minutes, longer during lunch and evening rush." },
-  { q: "Which payments do you accept?", a: "Cash on collection/delivery, card on collection, and online payment (coming soon)." },
-  { q: "Is the fish fresh?", a: "Yes — our hake is delivered fresh and battered to order." },
+  { q: "Which payments do you accept?", a: "Cash on collection/delivery and card on collection. Online card payments through Yoco are being set up." },
+  { q: "Do you have vegetarian options?", a: "Yes — try our Veggie Tacos with roasted peppers, beans, corn and avocado. Please confirm any allergies or dietary requirements with staff." },
 ];
-
 export const rand = (n: number) => `R${n.toFixed(2).replace(/\.00$/, "")}`;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Fish, Send, X } from "lucide-react";
+import { UtensilsCrossed, Send, X } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -9,7 +9,7 @@ const STARTERS = ["What's popular today?", "What can I get for R100?", "Do you d
 export function AiChat() {
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([
-    { role: "assistant", content: "Molo! I'm **Fish & Chips AI**. Ask me about the menu, prices, hours or what to order." },
+    { role: "assistant", content: "Molo! I'm **Taco AI**. Ask me about the menu, prices, hours or what to order." },
   ]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -57,17 +57,17 @@ export function AiChat() {
     <>
       {!open && (
         <button onClick={() => setOpen(true)} className="fixed right-5 bottom-5 z-50 inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-background shadow-warm hover:bg-foreground/90">
-          <span className="grid size-7 place-items-center rounded-full bg-accent text-accent-foreground"><Fish className="size-4" /></span>
-          Ask Fish &amp; Chips AI
+          <span className="grid size-7 place-items-center rounded-full bg-accent text-accent-foreground"><UtensilsCrossed className="size-4" /></span>
+          Ask Taco AI
         </button>
       )}
       {open && (
         <div className="fixed right-4 bottom-4 z-50 flex h-[min(600px,85vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border bg-card shadow-warm">
           <div className="flex items-center justify-between bg-primary px-4 py-3 text-primary-foreground">
             <div className="flex items-center gap-2">
-              <span className="grid size-8 place-items-center rounded-full bg-accent text-accent-foreground"><Fish className="size-4" /></span>
+              <span className="grid size-8 place-items-center rounded-full bg-accent text-accent-foreground"><UtensilsCrossed className="size-4" /></span>
               <div className="leading-tight">
-                <p className="font-display font-semibold">Fish &amp; Chips AI</p>
+                <p className="font-display font-semibold">Taco AI</p>
                 <p className="text-xs opacity-80">Menu help · AI may make mistakes</p>
               </div>
             </div>
