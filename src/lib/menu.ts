@@ -7,7 +7,8 @@ import drinks from "@/assets/drinks.jpg";
 import extras from "@/assets/extras.jpg";
 
 export const BUSINESS = {
-  name: "Khayelitsha Fish & Chips",
+  name: "Aya's Delicious Fish & Chips",
+  founder: "Ayabonga Jonas",
   tagline: "Fresh. Crispy. Local.",
   address: "Cape Town CBD, Cape Town",
   phone: "073 522 7408",

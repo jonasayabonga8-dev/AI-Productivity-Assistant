@@ -11,7 +11,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
         <Link to="/" className="flex items-center gap-2">
-          <span className="grid size-9 place-items-center rounded-xl bg-primary font-display text-sm font-semibold text-primary-foreground">KF</span>
+          <span className="grid size-9 place-items-center rounded-xl bg-primary font-display text-sm font-semibold text-primary-foreground">AD</span>
           <span className="hidden font-display text-lg font-semibold leading-none sm:inline">{BUSINESS.name}</span>
         </Link>
         <nav className="flex items-center gap-5 text-sm font-medium text-muted-foreground">
@@ -40,7 +40,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t bg-card/50">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-5 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
-        <span>© {new Date().getFullYear()} {BUSINESS.name}</span>
+        <span>© {new Date().getFullYear()} {BUSINESS.name} · Founded by {BUSINESS.founder}</span>
         <span>{BUSINESS.tagline}</span>
       </div>
     </footer>

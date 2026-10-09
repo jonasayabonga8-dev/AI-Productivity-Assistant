@@ -11,9 +11,9 @@ import { BUSINESS, MENU, rand } from "@/lib/menu";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your order — Khayelitsha Fish & Chips" },
+      { title: "Your order — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Review your cart and check out for collection or delivery." },
-      { property: "og:title", content: "Your order — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "Your order — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Checkout for collection or delivery in Khayelitsha." },
     ],
   }),

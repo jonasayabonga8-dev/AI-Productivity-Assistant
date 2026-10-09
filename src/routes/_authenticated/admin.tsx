@@ -13,9 +13,9 @@ import { connectYoco, listStaff, setUserRole, yocoStatus } from "@/lib/orders.fu
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
-      { title: "Owner dashboard — Khayelitsha Fish & Chips" },
+      { title: "Owner dashboard — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Sales, menu availability, staff and AI business tools." },
-      { property: "og:title", content: "Owner dashboard — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "Owner dashboard — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Sales, menu availability, staff and AI business tools." },
     ],
   }),
