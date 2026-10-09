@@ -8,9 +8,9 @@ import { BUSINESS, CATEGORIES, CATEGORY_IMAGES, FAQ, MENU, PROMOS, REVIEWS } fro
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Khayelitsha Fish & Chips — Fresh. Crispy. Local." },
+      { title: "Aya's Delicious Fish & Chips — Fresh. Crispy. Local." },
       { name: "description", content: "Your local Khayelitsha fish & chips spot. Order your favourite meal for collection or delivery." },
-      { property: "og:title", content: "Khayelitsha Fish & Chips — Fresh. Crispy. Local." },
+      { property: "og:title", content: "Aya's Delicious Fish & Chips — Fresh. Crispy. Local." },
       { property: "og:description", content: "Order hake & chips, chicken, burgers and combos for collection or delivery in Khayelitsha." },
     ],
   }),

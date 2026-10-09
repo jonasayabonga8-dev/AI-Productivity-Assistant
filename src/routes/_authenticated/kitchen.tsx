@@ -9,9 +9,9 @@ import { STATUS_LABEL, nextStatus, type OrderItem } from "@/lib/order-status";
 export const Route = createFileRoute("/_authenticated/kitchen")({
   head: () => ({
     meta: [
-      { title: "Kitchen screen — Khayelitsha Fish & Chips" },
+      { title: "Kitchen screen — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Live order queue for kitchen staff." },
-      { property: "og:title", content: "Kitchen screen — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "Kitchen screen — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Live order queue for kitchen staff." },
     ],
   }),

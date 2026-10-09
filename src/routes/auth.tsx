@@ -13,9 +13,9 @@ export const Route = createFileRoute("/auth")({
   validateSearch: z.object({ next: z.string().optional() }),
   head: () => ({
     meta: [
-      { title: "Sign in — Khayelitsha Fish & Chips" },
+      { title: "Sign in — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Sign in to order, track your food and see your order history." },
-      { property: "og:title", content: "Sign in — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "Sign in — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Sign in to order and track your fish & chips." },
     ],
   }),

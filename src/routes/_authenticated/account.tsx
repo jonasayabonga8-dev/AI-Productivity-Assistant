@@ -13,9 +13,9 @@ import { rateOrder } from "@/lib/orders.functions";
 export const Route = createFileRoute("/_authenticated/account")({
   head: () => ({
     meta: [
-      { title: "My orders — Khayelitsha Fish & Chips" },
+      { title: "My orders — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Track your order live and reorder your favourites." },
-      { property: "og:title", content: "My orders — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "My orders — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Live order tracking and order history." },
     ],
   }),

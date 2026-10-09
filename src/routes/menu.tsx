@@ -11,9 +11,9 @@ export const Route = createFileRoute("/menu")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Menu — Khayelitsha Fish & Chips" },
+      { title: "Menu — Aya's Delicious Fish & Chips" },
       { name: "description", content: "Hake & chips, chicken, burgers, combos, extras and drinks. Customise and order online." },
-      { property: "og:title", content: "Menu — Khayelitsha Fish & Chips" },
+      { property: "og:title", content: "Menu — Aya's Delicious Fish & Chips" },
       { property: "og:description", content: "Browse our full menu with prices in Rand and order for collection or delivery." },
     ],
   }),
