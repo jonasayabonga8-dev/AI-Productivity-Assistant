@@ -11,9 +11,11 @@ export const Route = createFileRoute("/menu")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Menu — Aya's Delicious Fish & Chips" },
-      { name: "description", content: "Hake & chips, chicken, burgers, combos, extras and drinks. Customise and order online." },
-      { property: "og:title", content: "Menu — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Menu — Ayas Delicious Tacos" },
+      { name: "description", content: "Beef tacos, chicken tacos, veggie tacos, nachos, combos and drinks. Customise and order online." },
+      { property: "og:title", content: "Menu — Ayas Delicious Tacos" },
       { property: "og:description", content: "Browse our full menu with prices in Rand and order for collection or delivery." },
     ],
   }),
@@ -40,12 +42,12 @@ function MenuPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
       <h1 className="text-4xl font-semibold">Our menu</h1>
-      <p className="mt-2 text-muted-foreground">Fried fresh to order. Tap an item to customise.</p>
+      <p className="mt-2 text-muted-foreground">Fresh fillings. Warm tortillas. Big flavour.</p>
 
       <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center">
         <label className="glass-panel flex flex-1 items-center gap-2 rounded-full px-4 py-2.5">
           <Search className="size-4 text-muted-foreground" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search hake, wings, combo…" className="w-full bg-transparent text-sm outline-none" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search tacos, nachos, combo…" className="w-full bg-transparent text-sm outline-none" />
         </label>
         <label className="flex items-center gap-3 text-sm text-muted-foreground">
           Up to R{maxPrice}

@@ -9,12 +9,12 @@ export function SiteHeader() {
   const { session, isStaff, isAdmin } = useAuth();
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-5 py-3">
         <Link to="/" className="flex items-center gap-2">
-          <span className="grid size-9 place-items-center rounded-xl bg-primary font-display text-sm font-semibold text-primary-foreground">AD</span>
-          <span className="hidden font-display text-lg font-semibold leading-none sm:inline">{BUSINESS.name}</span>
+          <span className="grid size-9 place-items-center rounded-lg bg-primary font-display text-sm font-semibold text-primary-foreground">AD</span>
+          <span className="font-display text-sm font-semibold leading-tight sm:text-lg">{BUSINESS.name}</span>
         </Link>
-        <nav className="flex items-center gap-5 text-sm font-medium text-muted-foreground">
+        <nav className="flex items-center gap-3 text-sm sm:gap-5 font-medium text-muted-foreground">
           <Link to="/menu" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>Menu</Link>
           <Link to="/" hash="specials" className="hidden hover:text-foreground md:inline">Specials</Link>
           <Link to="/" hash="visit" className="hidden hover:text-foreground md:inline">Visit</Link>

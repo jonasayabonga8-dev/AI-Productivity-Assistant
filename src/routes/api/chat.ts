@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BUSINESS, MENU, PROMOS, FAQ } from "@/lib/menu";
 
-const SYSTEM = () => `ROLE: You are "Fish & Chips AI", the friendly customer assistant for ${BUSINESS.name} in Khayelitsha, Cape Town.
+const SYSTEM = () => `ROLE: You are "Taco AI", the friendly customer assistant for ${BUSINESS.name} in Cape Town CBD, Cape Town.
 CONTEXT:
 - Address: ${BUSINESS.address}. Phone: ${BUSINESS.phone}.
 - Hours: ${BUSINESS.hours.map((h) => `${h.day} ${h.time}`).join("; ")}.

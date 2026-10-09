@@ -11,10 +11,12 @@ import { BUSINESS, MENU, rand } from "@/lib/menu";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your order — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Your order — Ayas Delicious Tacos" },
       { name: "description", content: "Review your cart and check out for collection or delivery." },
-      { property: "og:title", content: "Your order — Aya's Delicious Fish & Chips" },
-      { property: "og:description", content: "Checkout for collection or delivery in Khayelitsha." },
+      { property: "og:title", content: "Your order — Ayas Delicious Tacos" },
+      { property: "og:description", content: "Checkout for collection or delivery in Cape Town CBD." },
     ],
   }),
   component: CartPage,
@@ -102,7 +104,8 @@ function CartPage() {
         )}
         <ul className="mt-6 space-y-3">
           {lines.map((l) => {
-            const item = MENU.find((m) => m.id === l.itemId)!;
+            const item = MENU.find((m) => m.id === l.itemId);
+            if (!item) return null;
             const opts = Object.entries(l.options).filter(([, v]) => v && v !== "None" && v !== "Regular").map(([, v]) => v);
             return (
               <li key={l.key} className="glass-panel flex items-center gap-4 rounded-2xl p-3">

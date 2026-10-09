@@ -13,9 +13,11 @@ import { rateOrder } from "@/lib/orders.functions";
 export const Route = createFileRoute("/_authenticated/account")({
   head: () => ({
     meta: [
-      { title: "My orders — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "My orders — Ayas Delicious Tacos" },
       { name: "description", content: "Track your order live and reorder your favourites." },
-      { property: "og:title", content: "My orders — Aya's Delicious Fish & Chips" },
+      { property: "og:title", content: "My orders — Ayas Delicious Tacos" },
       { property: "og:description", content: "Live order tracking and order history." },
     ],
   }),

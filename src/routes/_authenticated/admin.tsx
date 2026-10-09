@@ -13,9 +13,11 @@ import { connectYoco, listStaff, setUserRole, yocoStatus } from "@/lib/orders.fu
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
-      { title: "Owner dashboard — Aya's Delicious Fish & Chips" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Owner dashboard — Ayas Delicious Tacos" },
       { name: "description", content: "Sales, menu availability, staff and AI business tools." },
-      { property: "og:title", content: "Owner dashboard — Aya's Delicious Fish & Chips" },
+      { property: "og:title", content: "Owner dashboard — Ayas Delicious Tacos" },
       { property: "og:description", content: "Sales, menu availability, staff and AI business tools." },
     ],
   }),
@@ -204,7 +206,7 @@ const AI_TOOLS = [
   { id: "planner", title: "Daily planner", desc: "Prep quantities and staffing for today.", placeholder: "e.g. It's raining today and there's a soccer match tonight" },
   { id: "feedback", title: "Feedback analyst", desc: "What customers love and complain about.", placeholder: "Anything specific to look for? (optional)" },
   { id: "promo", title: "Promotion ideas", desc: "Specials to lift sales this week.", placeholder: "e.g. Tuesdays are slow; budget is tight" },
-  { id: "message", title: "Message writer", desc: "WhatsApp/SMS messages for customers.", placeholder: "e.g. Tell customers about Friday's 2-for-1 hake" },
+  { id: "message", title: "Message writer", desc: "WhatsApp/SMS messages for customers.", placeholder: "e.g. Tell customers about Friday's 2-for-1 tacos" },
 ] as const;
 
 function AiTools() {
